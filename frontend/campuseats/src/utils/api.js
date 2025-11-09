@@ -1,10 +1,6 @@
 // API configuration for different environments
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// Debug: Log the API URL
-console.log('🔍 API_BASE_URL:', API_BASE_URL);
-console.log('🔍 Environment variables:', import.meta.env);
-
 export const API_ENDPOINTS = {
   AUTH: {
     LOGIN: `${API_BASE_URL}/api/auth/login`,
