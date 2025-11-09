@@ -20,7 +20,7 @@
 
 ```bash
 PORT=5000
-MONGODB_URI=mongodb+srv://lalitsureliya8_db_user:6D7KfCGzExQk60ef@lalit.pbe7wlk.mongodb.net/campuseats
+MONGODB_URI=mongodb+srv://lalitsureliya8_db_user:6D7KfCGzExQk60ef@lalit.pbe7wlk.mongodb.net/campuseats?appName=lalit
 JWT_SECRET=campuseats_super_secret_jwt_key_2024_very_long_and_secure
 NODE_ENV=production
 ```
