@@ -4,6 +4,7 @@ import { ShoppingCart, LogOut, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import AddToCartButton from './AddToCartButton';
+import { API_ENDPOINTS, apiCall } from '../utils/api';
 
 function DashboardPage() {
   const [foodItems, setFoodItems] = useState([]);
@@ -194,15 +195,7 @@ function DashboardPage() {
 
   const fetchUserProfile = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/auth/profile', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      const data = await response.json();
+      const data = await apiCall(API_ENDPOINTS.AUTH.PROFILE);
       if (data.success) {
         setUser(data.data);
       }

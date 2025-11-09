@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, User, Edit3, Save, X, Mail, Phone, Camera, Award, Clock, Trophy } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { API_ENDPOINTS, apiCall } from '../utils/api';
 
 function ProfilePage() {
   const [user, setUser] = useState({});
@@ -17,14 +18,7 @@ function ProfilePage() {
 
   const fetchUserProfile = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/auth/profile', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      const data = await response.json();
+      const data = await apiCall(API_ENDPOINTS.AUTH.PROFILE);
       if (data.success) {
         setUser(data.data);
         setFormData(data.data);
@@ -46,17 +40,11 @@ function ProfilePage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/auth/profile', {
+      const data = await apiCall(API_ENDPOINTS.AUTH.PROFILE, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
         body: JSON.stringify(formData)
       });
 
-      const data = await response.json();
       if (data.success) {
         setUser(data.data);
         setIsEditing(false);
