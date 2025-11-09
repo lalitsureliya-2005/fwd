@@ -55,6 +55,13 @@ function RegisterPage() {
 
     setLoading(true);
     try {
+      console.log('🔍 Registering with URL:', API_ENDPOINTS.AUTH.REGISTER);
+      console.log('🔍 Form data:', {
+        fullName: formData.fullName,
+        email: formData.email,
+        mobileNumber: formData.mobileNumber,
+      });
+      
       const data = await apiCall(API_ENDPOINTS.AUTH.REGISTER, {
         method: 'POST',
         body: JSON.stringify({
@@ -65,6 +72,8 @@ function RegisterPage() {
         })
       });
 
+      console.log('🔍 Registration response:', data);
+
       if (data.success) {
         localStorage.setItem('token', data.token);
         toast.success('Registration successful!');
@@ -73,8 +82,8 @@ function RegisterPage() {
         toast.error(data.message || 'Registration failed');
       }
     } catch (error) {
-      console.error('Registration error:', error);
-      toast.error('An error occurred during registration');
+      console.error('Registration error details:', error);
+      toast.error(`Registration failed: ${error.message}`);
     } finally {
       setLoading(false);
     }
