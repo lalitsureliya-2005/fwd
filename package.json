@@ -1,0 +1,30 @@
+{
+  "name": "campus-eats",
+  "version": "1.0.0",
+  "description": "Campus Eats - Food Ordering System",
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend/campuseats && npm install",
+    "start:backend": "cd backend && npm run start",
+    "start:frontend": "cd frontend/campuseats && npm run dev",
+    "dev": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "build": "cd frontend/campuseats && npm run build",
+    "start": "concurrently \"npm run start:backend\" \"cd frontend/campuseats && npm run preview\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "food-ordering",
+    "mern-stack",
+    "campus"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "framer-motion": "^12.23.24",
+    "lucide-react": "^0.553.0",
+    "react-hot-toast": "^2.6.0",
+    "react-router-dom": "^7.9.5"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
