@@ -32,11 +32,21 @@ export const apiCall = async (url, options = {}) => {
   try {
     const response = await fetch(url, defaultOptions);
     
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    // Get response text first to handle both JSON and text responses
+    const responseText = await response.text();
+    let data;
+    
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      data = { success: false, message: responseText || 'Invalid response from server' };
     }
     
-    return await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || `HTTP error! status: ${response.status}`);
+    }
+    
+    return data;
   } catch (error) {
     console.error('API call failed:', error);
     throw error;
