@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { API_ENDPOINTS, apiCall } from '../utils/api';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -29,13 +30,10 @@ function LoginPage() {
     toast.dismiss();
     
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const data = await apiCall(API_ENDPOINTS.AUTH.LOGIN, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
-
-      const data = await response.json();
       
       if (data.success) {
         localStorage.setItem('token', data.token);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { API_ENDPOINTS, apiCall } from '../utils/api';
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -54,18 +55,15 @@ function RegisterPage() {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const data = await apiCall(API_ENDPOINTS.AUTH.REGISTER, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fullName: formData.fullName,
           email: formData.email,
           mobileNumber: formData.mobileNumber,
           password: formData.password
-        }),
+        })
       });
-
-      const data = await response.json();
 
       if (data.success) {
         localStorage.setItem('token', data.token);
