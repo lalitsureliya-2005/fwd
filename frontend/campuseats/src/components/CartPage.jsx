@@ -9,6 +9,7 @@ function CartPage() {
   const [total, setTotal] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,18 +76,30 @@ function CartPage() {
   };
 
   const processPayment = async () => {
+    if (!selectedPayment) {
+      toast.error('Please select a payment method');
+      return;
+    }
+
     setIsProcessing(true);
     setShowPaymentModal(false);
     
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
       clearCart();
-      toast.success('Order placed successfully! 🎉');
+      
+      if (selectedPayment === 'upi') {
+        toast.success('UPI payment successful! Order placed 🎉');
+      } else {
+        toast.success('Order placed! Pay cash on delivery 💰');
+      }
+      
       setTimeout(() => navigate('/dashboard'), 1000);
     } catch (error) {
       toast.error('Failed to place order. Please try again.');
     } finally {
       setIsProcessing(false);
+      setSelectedPayment(''); // Reset payment selection
     }
   };
 
@@ -141,23 +154,23 @@ function CartPage() {
             </div>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
             <div className="lg:col-span-2 space-y-4">
               {cartItems.map((item, index) => (
                 <motion.div
                   key={item.id}
-                  className="bg-white/80 backdrop-blur-md rounded-2xl p-6 shadow-lg"
+                  className="bg-white/80 backdrop-blur-md rounded-2xl p-4 lg:p-6 shadow-lg"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex-grow">
-                      <h3 className="text-xl font-semibold text-gray-800">{item.name}</h3>
-                      <p className="text-gray-600 text-sm mb-2">{item.description}</p>
+                      <h3 className="text-lg lg:text-xl font-semibold text-gray-800">{item.name}</h3>
+                      <p className="text-gray-600 text-sm mb-2 line-clamp-2">{item.description}</p>
                       <span className="text-lg font-bold text-green-600">₹{item.price}</span>
                     </div>
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center justify-between sm:justify-end space-x-4">
                       <div className="flex items-center bg-gray-100 rounded-xl">
                         <button
                           onClick={() => updateQuantity(item.id, -1)}
@@ -165,7 +178,7 @@ function CartPage() {
                         >
                           <Minus className="w-4 h-4" />
                         </button>
-                        <span className="px-4 py-2 font-semibold">{item.quantity}</span>
+                        <span className="px-3 py-2 font-semibold min-w-[3rem] text-center">{item.quantity}</span>
                         <button
                           onClick={() => updateQuantity(item.id, 1)}
                           className="p-2 text-green-600 hover:bg-green-100 rounded-xl"
@@ -173,7 +186,7 @@ function CartPage() {
                           <Plus className="w-4 h-4" />
                         </button>
                       </div>
-                      <div className="text-lg font-bold text-gray-800">
+                      <div className="text-lg font-bold text-gray-800 min-w-[4rem] text-right">
                         ₹{(item.price * item.quantity).toFixed(0)}
                       </div>
                       <button
@@ -246,13 +259,13 @@ function CartPage() {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl"
+              className="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
             >
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-bold text-gray-800">Choose Payment Method</h3>
+              <div className="flex justify-between items-center mb-4 sm:mb-6">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-800">Choose Payment</h3>
                 <button
                   onClick={() => setShowPaymentModal(false)}
                   className="p-2 text-gray-400 hover:text-gray-600"
@@ -261,48 +274,78 @@ function CartPage() {
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {/* UPI Payment Option */}
-                <div className="border-2 border-blue-200 rounded-xl p-4 bg-blue-50">
-                  <div className="flex items-center justify-between mb-4">
+                <div 
+                  onClick={() => setSelectedPayment('upi')}
+                  className={`border-2 rounded-xl p-3 sm:p-4 cursor-pointer transition-all ${
+                    selectedPayment === 'upi' 
+                      ? 'border-blue-500 bg-blue-100 ring-2 ring-blue-200' 
+                      : 'border-blue-200 bg-blue-50 hover:border-blue-300'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-3">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
+                        selectedPayment === 'upi' ? 'bg-blue-600' : 'bg-blue-500'
+                      }`}>
                         <CreditCard className="w-4 h-4 text-white" />
                       </div>
                       <div>
                         <h4 className="font-semibold text-gray-800">UPI Payment</h4>
-                        <p className="text-sm text-gray-600">Scan QR code to pay</p>
+                        <p className="text-xs sm:text-sm text-gray-600">Scan QR code to pay</p>
                       </div>
+                      {selectedPayment === 'upi' && (
+                        <div className="ml-2 sm:ml-3 w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs">✓</span>
+                        </div>
+                      )}
                     </div>
-                    <span className="font-bold text-lg text-blue-600">₹{total.toFixed(0)}</span>
+                    <span className="font-bold text-base sm:text-lg text-blue-600">₹{total.toFixed(0)}</span>
                   </div>
                   
-                  <div className="text-center">
-                    <div className="w-48 h-48 mx-auto bg-white rounded-xl p-4 shadow-md mb-4">
-                      <img 
-                        src="https://lh3.googleusercontent.com/pw/AP1GczPswzP2d6HGReTFgkrHwWu1D7FZjAvw_UWsHPVnfygoYH2HCULExa2npukZcoMugmLQ3tImdquJzXCEnq3WRQDND9iSxLDADBpakq00RMRLF2QOAG0rPSc5A-1E4V4jSV117uHSYbsnaXW4a6L-pY-8tw=w622-h635-s-no-gm?authuser=0"
-                        alt="UPI QR Code"
-                        className="w-full h-full object-contain"
-                      />
+                  {selectedPayment === 'upi' && (
+                    <div className="text-center">
+                      <div className="w-36 h-36 sm:w-48 sm:h-48 mx-auto bg-white rounded-xl p-2 sm:p-4 shadow-md mb-3 sm:mb-4">
+                        <img 
+                          src="https://lh3.googleusercontent.com/pw/AP1GczPswzP2d6HGReTFgkrHwWu1D7FZjAvw_UWsHPVnfygoYH2HCULExa2npukZcoMugmLQ3tImdquJzXCEnq3WRQDND9iSxLDADBpakq00RMRLF2QOAG0rPSc5A-1E4V4jSV117uHSYbsnaXW4a6L-pY-8tw=w622-h635-s-no-gm?authuser=0"
+                          alt="UPI QR Code"
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <p className="text-xs sm:text-sm text-gray-600 mb-2">UPI ID: 7898538631@ptaxis</p>
+                      <p className="text-xs text-gray-500">Scan with PhonePe, GPay, Paytm</p>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">UPI ID: 7898538631@ptaxis</p>
-                    <p className="text-xs text-gray-500">Scan with any UPI app like PhonePe, GPay, Paytm</p>
-                  </div>
+                  )}
                 </div>
 
                 {/* Cash on Delivery Option */}
-                <div className="border-2 border-green-200 rounded-xl p-4 bg-green-50">
+                <div 
+                  onClick={() => setSelectedPayment('cash')}
+                  className={`border-2 rounded-xl p-3 sm:p-4 cursor-pointer transition-all ${
+                    selectedPayment === 'cash' 
+                      ? 'border-green-500 bg-green-100 ring-2 ring-green-200' 
+                      : 'border-green-200 bg-green-50 hover:border-green-300'
+                  }`}
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center mr-3">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
+                        selectedPayment === 'cash' ? 'bg-green-600' : 'bg-green-500'
+                      }`}>
                         <span className="text-white text-sm font-bold">₹</span>
                       </div>
                       <div>
                         <h4 className="font-semibold text-gray-800">Cash on Delivery</h4>
-                        <p className="text-sm text-gray-600">Pay when order arrives</p>
+                        <p className="text-xs sm:text-sm text-gray-600">Pay when order arrives</p>
                       </div>
+                      {selectedPayment === 'cash' && (
+                        <div className="ml-2 sm:ml-3 w-5 h-5 bg-green-600 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs">✓</span>
+                        </div>
+                      )}
                     </div>
-                    <span className="font-bold text-lg text-green-600">₹{total.toFixed(0)}</span>
+                    <span className="font-bold text-base sm:text-lg text-green-600">₹{total.toFixed(0)}</span>
                   </div>
                 </div>
               </div>
@@ -310,13 +353,17 @@ function CartPage() {
               <div className="mt-6 space-y-3">
                 <button
                   onClick={processPayment}
-                  disabled={isProcessing}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg disabled:opacity-50"
+                  disabled={isProcessing || !selectedPayment}
+                  className={`w-full py-3 rounded-xl font-semibold transition-all shadow-lg ${
+                    selectedPayment && !isProcessing
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700'
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }`}
                 >
-                  {isProcessing ? 'Processing...' : 'Confirm Payment'}
+                  {isProcessing ? 'Processing...' : selectedPayment ? `Confirm ${selectedPayment === 'upi' ? 'UPI' : 'Cash'} Payment` : 'Select Payment Method'}
                 </button>
                 <button
-                  onClick={() => setShowPaymentModal(false)}
+                  onClick={() => { setShowPaymentModal(false); setSelectedPayment(''); }}
                   className="w-full bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-300 transition-all"
                 >
                   Cancel

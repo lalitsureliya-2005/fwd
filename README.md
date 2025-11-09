@@ -128,7 +128,166 @@ CampusEats is a modern, full-stack online campus food platform specifically desi
 ### 1. Clone Repository
 ```bash
 git clone <repository-url>
-cd fwd
+# 🍽️ CampusEats - BMSCE Online Food Platform
+
+A modern, responsive web application for ordering food on the BMSCE campus. Built with React, Node.js, and MongoDB.
+
+## 🌐 Live Demo
+
+**🚀 [Access CampusEats](https://fwd-oxs1-git-main-lallibhais-projects.vercel.app/)**
+
+## ✨ Features
+
+- 🔐 **Secure Authentication** - Email-based registration for BMSCE students
+- 🍕 **Food Menu** - Browse delicious campus food items
+- 🛒 **Shopping Cart** - Add/remove items with real-time updates
+- 💰 **Multiple Payment Options** - UPI and Cash on Delivery
+- 📱 **Mobile Optimized** - Responsive design for all devices
+- 👤 **User Profile** - Manage personal information
+- ⚡ **Real-time Updates** - Instant cart and order updates
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React 18** - Modern UI library
+- **Vite** - Fast build tool
+- **Tailwind CSS** - Utility-first styling
+- **Framer Motion** - Smooth animations
+- **React Hot Toast** - Beautiful notifications
+
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **MongoDB Atlas** - Cloud database
+- **JWT** - Authentication tokens
+- **bcryptjs** - Password hashing
+
+### Deployment
+- **Frontend**: Vercel
+- **Backend**: Railway
+- **Database**: MongoDB Atlas
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v16 or higher)
+- MongoDB account
+- Git
+
+### Local Development
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/lalitsureliya-2005/fwd.git
+   cd fwd
+   ```
+
+2. **Backend Setup**
+   ```bash
+   cd backend
+   npm install
+   
+   # Create .env file
+   PORT=5000
+   MONGODB_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   NODE_ENV=development
+   
+   npm start
+   ```
+
+3. **Frontend Setup**
+   ```bash
+   cd frontend/campuseats
+   npm install
+   
+   # Create .env file
+   VITE_API_URL=http://localhost:5000
+   
+   npm run dev
+   ```
+
+## 📱 Payment Options
+
+- **💳 UPI Payment** - Scan QR code with any UPI app
+- **💰 Cash on Delivery** - Pay when your order arrives
+
+## 🎯 User Roles
+
+- **👨‍🎓 Students** - Browse menu, place orders, manage profile
+- **👨‍💼 Admin** - Manage food items, view orders (future feature)
+
+## 🔧 Environment Variables
+
+### Backend (.env)
+```
+PORT=5000
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/campuseats
+JWT_SECRET=your_super_secret_jwt_key
+NODE_ENV=production
+```
+
+### Frontend (.env)
+```
+VITE_API_URL=https://your-backend-url.com
+```
+
+## 📂 Project Structure
+
+```
+fwd/
+├── backend/
+│   ├── models/          # MongoDB schemas
+│   ├── server.js        # Express server
+│   └── db.js           # Database connection
+├── frontend/campuseats/
+│   ├── src/
+│   │   ├── components/  # React components
+│   │   ├── utils/       # API utilities
+│   │   └── assets/      # Static assets
+│   └── public/          # Public files
+└── README.md
+```
+
+## 🌟 Key Features
+
+### 🔐 Authentication
+- BMSCE email validation (@bmsce.ac.in)
+- Secure JWT token system
+- Protected routes
+
+### 🍽️ Food Ordering
+- Real-time cart management
+- Category-wise food browsing
+- Quantity management
+- Order summary
+
+### 📱 Responsive Design
+- Mobile-first approach
+- Touch-friendly interface
+- Optimized for all screen sizes
+
+## 🤝 Contributing
+
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📧 Contact
+
+**Lalit Sureliya**
+- GitHub: [@lalitsureliya-2005](https://github.com/lalitsureliya-2005)
+- Project Link: [https://github.com/lalitsureliya-2005/fwd](https://github.com/lalitsureliya-2005/fwd)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+**🎉 Made with ❤️ for BMSCE students by Lalit Sureliya**
 ```
 
 ### 2. Backend Setup
